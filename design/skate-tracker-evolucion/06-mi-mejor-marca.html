@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>F · Mi mejor marca — Evolución</title>
+<style>
+  :root{
+    --pista:#0A3D5C; --deep:#06283B; --amarillo:#FFC72C;
+    --coral:#D9480F; --coral-soft:#FDF0E9;
+    --verde:#157A55; --verde-soft:#E4F2EC;
+    --rojo:#B3400F; --rojo-soft:#FBEDE5;
+    --ink:#08161F; --ink2:#5A707D; --ink3:#8AA2AE;
+    --line:#D8E4EA; --line2:#EAF1F5; --bg:#F4F8FA; --surface:#FFFFFF;
+    --radius:14px; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#E7EEF2;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  .board{width:470px;margin:0 auto;padding:22px 20px 32px}
+  .bh h1{font-size:17px;margin:0 0 4px}
+  .bh p{margin:0 0 6px;font-size:12px;color:var(--ink2);line-height:1.5}
+  .bh .tr{font-size:12px;color:var(--ink2);line-height:1.5;margin:10px 0 16px}
+  .bh .tr b{color:var(--ink)}
+  figure{margin:0}
+  figcaption{margin-top:8px;font-size:11px;color:var(--ink2);text-align:center}
+  .phone{width:390px;height:844px;margin:0 auto;background:var(--bg);border-radius:26px;border:1px solid #D3DDE3;
+    box-shadow:0 18px 40px -24px rgba(8,22,31,.5);overflow:hidden;display:flex;flex-direction:column}
+  .bar{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+  .bar .t{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3)}
+  .bar .v{font-size:11px;color:var(--ink2);font-family:var(--mono)}
+  .body{flex:1;padding:16px 16px 0;overflow:hidden}
+  .tabbar{display:flex;border-top:1px solid var(--line);background:#FAFBFC}
+  .tabbar span{flex:1;text-align:center;padding:10px 0;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+  .tabbar span.on{color:var(--pista);box-shadow:inset 0 2px 0 var(--pista)}
+
+  .card{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:14px;margin-bottom:12px}
+  .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px}
+  .card h3{margin:0;font-size:13.5px;font-weight:600}
+  .card .when{font-size:10px;color:var(--ink3);margin:2px 0 0;font-family:var(--mono)}
+  .pb{font-family:var(--mono);font-size:26px;font-weight:700;letter-spacing:-1px;line-height:1;color:var(--ink)}
+  .pb small{display:block;font-family:var(--sans);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:700;margin-bottom:4px}
+
+  .track{position:relative;height:44px;margin:14px 0 2px}
+  .track .line{position:absolute;left:0;right:0;top:15px;height:4px;border-radius:2px;background:var(--line2)}
+  .track .done{position:absolute;top:15px;height:4px;border-radius:2px;background:var(--pista)}
+  .track .m{position:absolute;top:6px;transform:translateX(-50%);text-align:center}
+  .track .m .dot{width:12px;height:12px;border-radius:50%;margin:0 auto 3px;border:2px solid #fff}
+  .track .m .cap{font-size:9px;font-family:var(--mono);color:var(--ink2);white-space:nowrap;margin-top:1px}
+  .track .m .who{font-size:8.5px;color:var(--ink3);white-space:nowrap}
+  .from .dot{background:#B6C0CA}
+  .now .dot{background:var(--coral);box-shadow:0 0 0 3px var(--coral-soft)}
+  .goal .dot{background:#fff;border:2px dashed var(--verde)}
+  .goal .cap{color:var(--verde);font-weight:700}
+
+  .goal-line{font-size:12px;color:var(--ink2);line-height:1.45;margin-top:4px}
+  .goal-line b{color:var(--ink)}
+  .goal-line i{font-style:normal;font-family:var(--mono);color:var(--verde);font-weight:700}
+  .delta{font-size:11px;font-family:var(--mono);color:var(--verde);font-weight:700}
+
+  .note{margin-top:6px;border-radius:10px;background:var(--line2);padding:10px 11px;font-size:10.5px;line-height:1.45;color:var(--ink2)}
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="bh">
+    <h1>F · Mi mejor marca</h1>
+    <p>El ancla es su propio récord, no el de las demás. Cada prueba muestra de dónde salió, dónde está hoy y cuál es el próximo tiempo a cazar.</p>
+    <p class="tr"><b>Tradeoff:</b> motivador y muy claro —«mi mejor marca» y «objetivo» son ideas que una nena ya tiene—, y no depende de cómo corrieron las demás. A cambio no dice nada del club: sirve para progresar, no para saber cómo está parada.</p>
+  </div>
+
+  <figure>
+    <div class="phone">
+      <div class="bar"><span class="t">Evolución</span><span class="v">2 válidas</span></div>
+      <div class="body">
+        <div class="card">
+          <div class="top">
+            <div><h3>Remates 200 m + dist.</h3><p class="when">2 válidas · misma prueba</p></div>
+            <div class="pb"><small>Mi mejor</small>0'25"828</div>
+          </div>
+          <div class="track">
+            <span class="line"></span>
+            <span class="done" style="left:22%;width:30%"></span>
+            <span class="m from" style="left:22%"><span class="dot"></span><span class="cap">0'25"923</span><span class="who">válida 1</span></span>
+            <span class="m now" style="left:52%"><span class="dot"></span><span class="cap">0'25"828</span><span class="who">hoy</span></span>
+            <span class="m goal" style="left:88%"><span class="dot"></span><span class="cap">0'25"640</span><span class="who">próximo</span></span>
+          </div>
+          <p class="goal-line">Bajaste <span class="delta">95 milésimas</span>. El próximo escalón es <b>Samai</b>: te faltan <i>0,188 s</i>.</p>
+        </div>
+
+        <div class="card">
+          <div class="top">
+            <div><h3>Habilidad circuito</h3><p class="when">2 válidas · el circuito cambió</p></div>
+            <div class="pb"><small>Mi mejor</small>0'18"447</div>
+          </div>
+          <div class="track">
+            <span class="line"></span>
+            <span class="done" style="left:20%;width:38%"></span>
+            <span class="m goal" style="left:20%"><span class="dot"></span><span class="cap">0'18"447</span><span class="who">#19</span></span>
+            <span class="m now" style="left:58%"><span class="dot"></span><span class="cap">6 puestos</span><span class="who">ganados</span></span>
+          </div>
+          <p class="goal-line">El circuito fue otro (#14 → #19), así que la marca anterior no se compara. Pero pasaste de <b>13.ª a 7.ª</b>: eso sí es tuyo.</p>
+        </div>
+
+        <div class="card">
+          <div class="top">
+            <div><h3>Velocidad olímpica</h3><p class="when">2 válidas · la distancia cambió</p></div>
+            <div class="pb"><small>Mi mejor</small>2'14"779</div>
+          </div>
+          <p class="goal-line" style="margin-top:10px">Corrés a <b>4,45 m/s</b>. En la válida 1, sobre una prueba más corta, ibas a <b>4,55 m/s</b>. La distancia larga todavía te cuesta.</p>
+          <div class="note">Velocidad = distancia ÷ tiempo. Es la única forma de comparar 300 m con 600 m sin que el número se vuelva el doble.</div>
+        </div>
+
+        <div class="card" style="border-style:dashed;background:transparent">
+          <h3 style="font-size:12.5px">Con la tercera válida</h3>
+          <p class="goal-line" style="margin-top:5px;font-size:11.5px">Cuando haya tres, la app agrega la línea de tendencia y estima el próximo tiempo de cada prueba.</p>
+        </div>
+      </div>
+      <div class="tabbar"><span>Hoy</span><span>Club</span><span class="on">Evolución</span><span>Cargar</span></div>
+    </div>
+    <figcaption>Con los datos reales de las dos válidas</figcaption>
+  </figure>
+</div>
+</body>
+</html>

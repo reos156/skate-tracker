@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>C · Plano de brecha — Evolución</title>
+<style>
+  :root{
+    --pista:#0A3D5C; --deep:#06283B; --amarillo:#FFC72C;
+    --coral:#D9480F; --coral-soft:#FDF0E9;
+    --verde:#157A55; --verde-soft:#E4F2EC;
+    --rojo:#B3400F; --rojo-soft:#FBEDE5;
+    --ink:#08161F; --ink2:#5A707D; --ink3:#8AA2AE;
+    --line:#D8E4EA; --line2:#EAF1F5; --bg:#F4F8FA; --surface:#FFFFFF;
+    --radius:14px; --tap:48px;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#E7EEF2;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  .board{width:850px;margin:0 auto;padding:24px 22px 36px}
+  .bh{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:16px}
+  .bh h1{font-size:17px;margin:0 0 3px}
+  .bh p{margin:0;font-size:12px;color:var(--ink2);line-height:1.5;max-width:520px}
+  .bh .tr{font-size:12px;color:var(--ink2);line-height:1.5;max-width:330px;text-align:right}
+  .bh .tr b{color:var(--ink)}
+  .frames{display:flex;gap:22px;justify-content:center;align-items:flex-start}
+  figure{margin:0}
+  figcaption{margin-top:8px;font-size:11px;color:var(--ink2);text-align:center}
+
+  .phone{width:390px;height:844px;background:var(--bg);border-radius:26px;border:1px solid #D3DDE3;
+    box-shadow:0 18px 40px -24px rgba(8,22,31,.5);overflow:hidden;display:flex;flex-direction:column}
+  .bar{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+  .bar .t{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3)}
+  .bar .v{font-size:11px;color:var(--ink2);font-family:var(--mono)}
+  .body{flex:1;padding:14px 16px 0;overflow:hidden}
+  .tabbar{display:flex;border-top:1px solid var(--line);background:#FAFBFC}
+  .tabbar span{flex:1;text-align:center;padding:10px 0;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+  .tabbar span.on{color:var(--pista);box-shadow:inset 0 2px 0 var(--pista)}
+
+  .chart{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 10px 8px}
+  .chart .hd{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px 4px}
+  .chart .hd h3{margin:0;font-size:13px}
+  .chart .hd span{font-size:10px;color:var(--ink3);letter-spacing:.06em}
+  .chart svg{display:block;width:100%;height:auto}
+  .hint{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--ink3);padding:2px 4px 0}
+
+  /* leyenda-tabla */
+  .legend{border-top:1px solid var(--ink);margin-top:14px}
+  .lrow{display:grid;grid-template-columns:14px 1fr 44px 44px;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line2);font-size:12.5px}
+  .lrow .mk{width:10px;height:10px;justify-self:center}
+  .lrow .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lrow .nm small{display:block;font-size:10px;color:var(--ink3);margin-top:1px}
+  .lrow .now{font-family:var(--mono);font-size:12px;text-align:right;font-weight:700}
+  .lrow .dd{font-family:var(--mono);font-size:11px;text-align:right}
+  .dd.g{color:var(--verde)} .dd.b{color:var(--rojo)} .dd.f{color:var(--ink3)}
+  .flag{display:inline-block;font-size:8.5px;font-weight:800;letter-spacing:.05em;padding:1px 5px;border-radius:4px;background:var(--line2);color:var(--ink2);text-transform:uppercase;margin-left:4px;vertical-align:1px}
+
+  .proj{margin-top:14px;border-radius:var(--radius);padding:13px;background:linear-gradient(160deg,var(--pista),var(--deep));color:#DCEBF2}
+  .proj h3{margin:0 0 5px;font-size:12.5px;color:#fff}
+  .proj .steps{display:flex;gap:5px;margin:8px 0 6px}
+  .proj .steps i{width:26px;height:5px;border-radius:3px;background:rgba(255,255,255,.16)}
+  .proj .steps i.on{background:var(--amarillo)}
+  .proj .c{font-size:10px;letter-spacing:.08em;color:#8FB6C9}
+  .proj p{margin:6px 0 0;font-size:11px;line-height:1.45;color:#A9C6D4}
+  .nota{font-size:10px;color:var(--ink3);line-height:1.45;margin:10px 0 0}
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="bh">
+    <div>
+      <h1>C · Plano de brecha</h1>
+      <p>Un solo gráfico con las tres pruebas juntas en el mismo eje. Arriba es mejor: cada línea dice cómo se mueve esa prueba respecto de la punta del club.</p>
+    </div>
+    <p class="tr"><b>Tradeoff:</b> es la única dirección que muestra la tendencia de las tres a la vez y admite la proyección como parte del dibujo. A cambio, con dos puntos cada línea es un segmento corto: hay que leer la leyenda para saber cuánto cambió.</p>
+  </div>
+
+  <div class="frames">
+    <!-- ESTADO ACTUAL -->
+    <figure>
+      <div class="phone">
+        <div class="bar"><span class="t">Evolución</span><span class="v">2 válidas</span></div>
+        <div class="body">
+          <div class="chart">
+            <div class="hd"><h3>Brecha al mejor del club</h3><span>MENOS ES MEJOR</span></div>
+            <svg viewBox="0 0 322 258" role="img" aria-label="Brecha de las tres pruebas en dos válidas: habilidad baja de 12,2 a 5,1 por ciento, 200 metros de 8,2 a 7,9, olímpica sube de 7,1 a 9,1">
+              <!-- grilla -->
+              <line x1="34" y1="14" x2="308" y2="14" stroke="#EAF1F5"/>
+              <line x1="34" y1="96" x2="308" y2="96" stroke="#EAF1F5"/>
+              <line x1="34" y1="179" x2="308" y2="179" stroke="#EAF1F5"/>
+              <text x="28" y="18" text-anchor="end" font-size="9" fill="#8AA2AE">0%</text>
+              <text x="28" y="100" text-anchor="end" font-size="9" fill="#8AA2AE">5%</text>
+              <text x="28" y="183" text-anchor="end" font-size="9" fill="#8AA2AE">10%</text>
+
+              <!-- eje de válidas -->
+              <text x="34" y="250" font-size="9" fill="#8AA2AE">V1</text>
+              <text x="112" y="250" font-size="9" fill="#8AA2AE">V2</text>
+              <circle cx="190" cy="243" r="4" fill="#fff" stroke="#C3D3DC" stroke-width="1.6" stroke-dasharray="2.5 2.5"/>
+              <circle cx="268" cy="243" r="4" fill="#fff" stroke="#C3D3DC" stroke-width="1.6" stroke-dasharray="2.5 2.5"/>
+              <text x="190" y="234" text-anchor="middle" font-size="8.5" fill="#B0C2CC">válida 3</text>
+
+              <!-- habilidad: círculo, trazo grueso -->
+              <line x1="34" y1="215" x2="112" y2="98" stroke="#0A3D5C" stroke-width="2.6" stroke-linecap="round"/>
+              <circle cx="34" cy="215" r="4" fill="#0A3D5C"/>
+              <circle cx="112" cy="98" r="5.5" fill="#0A3D5C" stroke="#fff" stroke-width="2"/>
+
+              <!-- 200 m: rombo, trazo medio -->
+              <line x1="34" y1="148" x2="112" y2="143" stroke="#5A707D" stroke-width="2.2" stroke-linecap="round"/>
+              <path d="M34 142l5 6-5 6-5-6z" fill="#5A707D"/>
+              <path d="M112 137l6 6-6 6-6-6z" fill="#5A707D" stroke="#fff" stroke-width="1.6"/>
+
+              <!-- olímpica: cuadrado, trazo medio -->
+              <line x1="34" y1="132" x2="112" y2="163" stroke="#8AA2AE" stroke-width="2.2" stroke-linecap="round"/>
+              <rect x="30" y="128" width="9" height="9" fill="#8AA2AE"/>
+              <rect x="107" y="159" width="11" height="11" fill="#8AA2AE" stroke="#fff" stroke-width="1.6"/>
+            </svg>
+            <div class="hint">↑ más cerca de la punta del club</div>
+          </div>
+
+          <div class="legend">
+            <div class="lrow">
+              <svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4.5" fill="#0A3D5C"/></svg>
+              <span class="nm">Habilidad circuito<small>#14 → #19</small></span>
+              <span class="now">5,1%</span>
+              <span class="dd g">−7,1</span>
+            </div>
+            <div class="lrow">
+              <svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0l5 5-5 5-5-5z" fill="#5A707D"/></svg>
+              <span class="nm">Remates 200 m + dist.<small>misma base</small></span>
+              <span class="now">7,9%</span>
+              <span class="dd g">−0,3</span>
+            </div>
+            <div class="lrow">
+              <svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><rect width="10" height="10" fill="#8AA2AE"/></svg>
+              <span class="nm">Velocidad olímpica<small>300 m → 600 m</small></span>
+              <span class="now">9,1%</span>
+              <span class="dd b">+1,9</span>
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Proyección · falta una válida</h3>
+            <div class="steps"><i class="on"></i><i class="on"></i><i></i></div>
+            <div class="c">2 DE 3 VÁLIDAS CON TIEMPO</div>
+            <p>Con dos puntos la recta la elegimos nosotros: por eso las válidas futuras se dibujan vacías y no hay cifra.</p>
+          </div>
+          <p class="nota">La forma del marcador distingue cada prueba además del color, y las cifras van en la leyenda: el gráfico se entiende sin distinguir tonos.</p>
+        </div>
+        <div class="tabbar"><span>Hoy</span><span>Club</span><span class="on">Evolución</span><span>Cargar</span></div>
+      </div>
+      <figcaption>Hoy · 2 válidas</figcaption>
+    </figure>
+
+    <!-- ESTADO FUTURO -->
+    <figure>
+      <div class="phone">
+        <div class="bar"><span class="t">Evolución</span><span class="v">3 válidas</span></div>
+        <div class="body">
+          <div class="chart">
+            <div class="hd"><h3>Brecha al mejor del club</h3><span>MENOS ES MEJOR</span></div>
+            <svg viewBox="0 0 322 258" role="img" aria-label="Brecha de las tres pruebas en tres válidas con proyección punteada a la cuarta">
+              <line x1="34" y1="14" x2="308" y2="14" stroke="#EAF1F5"/>
+              <line x1="34" y1="96" x2="308" y2="96" stroke="#EAF1F5"/>
+              <line x1="34" y1="179" x2="308" y2="179" stroke="#EAF1F5"/>
+              <text x="28" y="18" text-anchor="end" font-size="9" fill="#8AA2AE">0%</text>
+              <text x="28" y="100" text-anchor="end" font-size="9" fill="#8AA2AE">5%</text>
+              <text x="28" y="183" text-anchor="end" font-size="9" fill="#8AA2AE">10%</text>
+
+              <text x="34" y="250" font-size="9" fill="#8AA2AE">V1</text>
+              <text x="112" y="250" font-size="9" fill="#8AA2AE">V2</text>
+              <text x="190" y="250" font-size="9" fill="#8AA2AE">V3</text>
+              <circle cx="268" cy="243" r="4" fill="#fff" stroke="#C3D3DC" stroke-width="1.6" stroke-dasharray="2.5 2.5"/>
+              <text x="268" y="234" text-anchor="middle" font-size="8.5" fill="#B0C2CC">válida 4</text>
+
+              <!-- banda de proyección -->
+              <path d="M190 68 L268 40 L268 60 L190 68 Z" fill="#0A3D5C" opacity=".07"/>
+              <path d="M190 131 L268 120 L268 136 L190 131 Z" fill="#5A707D" opacity=".08"/>
+
+              <!-- habilidad -->
+              <line x1="34" y1="215" x2="112" y2="98" stroke="#0A3D5C" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="112" y1="98" x2="190" y2="68" stroke="#0A3D5C" stroke-width="2.6" stroke-linecap="round"/>
+              <line x1="190" y1="68" x2="268" y2="50" stroke="#0A3D5C" stroke-width="2" stroke-dasharray="4 4"/>
+              <circle cx="34" cy="215" r="4" fill="#0A3D5C"/>
+              <circle cx="112" cy="98" r="4" fill="#0A3D5C"/>
+              <circle cx="190" cy="68" r="5.5" fill="#0A3D5C" stroke="#fff" stroke-width="2"/>
+              <circle cx="268" cy="50" r="5" fill="#fff" stroke="#0A3D5C" stroke-width="1.8" stroke-dasharray="3 3"/>
+
+              <!-- 200 m -->
+              <line x1="34" y1="148" x2="112" y2="143" stroke="#5A707D" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="112" y1="143" x2="190" y2="131" stroke="#5A707D" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="190" y1="131" x2="268" y2="128" stroke="#5A707D" stroke-width="1.8" stroke-dasharray="4 4"/>
+              <path d="M34 142l5 6-5 6-5-6z" fill="#5A707D"/>
+              <path d="M112 137l5 6-5 6-5-6z" fill="#5A707D"/>
+              <path d="M190 125l6 6-6 6-6-6z" fill="#5A707D" stroke="#fff" stroke-width="1.6"/>
+              <path d="M268 122l6 6-6 6-6-6z" fill="#fff" stroke="#5A707D" stroke-width="1.6" stroke-dasharray="2.5 2.5"/>
+
+              <!-- olímpica -->
+              <line x1="34" y1="132" x2="112" y2="163" stroke="#8AA2AE" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="112" y1="163" x2="190" y2="124" stroke="#8AA2AE" stroke-width="2.2" stroke-linecap="round"/>
+              <line x1="190" y1="124" x2="268" y2="111" stroke="#8AA2AE" stroke-width="1.8" stroke-dasharray="4 4"/>
+              <rect x="30" y="128" width="9" height="9" fill="#8AA2AE"/>
+              <rect x="108" y="159" width="9" height="9" fill="#8AA2AE"/>
+              <rect x="185" y="119" width="11" height="11" fill="#8AA2AE" stroke="#fff" stroke-width="1.6"/>
+              <rect x="263" y="106" width="10" height="10" fill="#fff" stroke="#8AA2AE" stroke-width="1.6" stroke-dasharray="2.5 2.5"/>
+            </svg>
+            <div class="hint">↑ más cerca de la punta · punteado = proyección</div>
+          </div>
+
+          <div class="legend">
+            <div class="lrow">
+              <svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><circle cx="5" cy="5" r="4.5" fill="#0A3D5C"/></svg>
+              <span class="nm">Habilidad circuito<small>#19 · 3 válidas</small></span>
+              <span class="now">3,3%</span>
+              <span class="dd g">−1,8</span>
+            </div>
+            <div class="lrow">
+              <svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0l5 5-5 5-5-5z" fill="#5A707D"/></svg>
+              <span class="nm">Remates 200 m + dist.<small>misma base</small></span>
+              <span class="now">7,1%</span>
+              <span class="dd g">−0,8</span>
+            </div>
+            <div class="lrow">
+              <svg class="mk" viewBox="0 0 10 10" aria-hidden="true"><rect width="10" height="10" fill="#8AA2AE"/></svg>
+              <span class="nm">Velocidad olímpica<small>600 m</small></span>
+              <span class="now">6,7%</span>
+              <span class="dd g">−2,4</span>
+            </div>
+          </div>
+
+          <div class="proj">
+            <h3>Proyección para la válida 4</h3>
+            <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i></div>
+            <div class="c">3 DE 3 VÁLIDAS CON TIEMPO</div>
+            <p>Las líneas punteadas son la recta de cada prueba. La banda muestra cuánto se dispersan los puntos: si es ancha, la estimación vale poco.</p>
+          </div>
+        </div>
+        <div class="tabbar"><span>Hoy</span><span>Club</span><span class="on">Evolución</span><span>Cargar</span></div>
+      </div>
+      <figcaption>Cuando haya 3 válidas · cifras de ejemplo</figcaption>
+    </figure>
+  </div>
+</div>
+</body>
+</html>

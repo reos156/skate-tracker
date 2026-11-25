@@ -1,0 +1,12 @@
+{
+  "name": "skate-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Seguimiento de tiempos de Salomé Rendón Erazo (club PAEN): evolución, comparativa del club y proyección.",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "test": "node --test tests/core.test.mjs tests/store.test.mjs tests/json-import.test.mjs tests/app.test.mjs",
+    "icons": "node tools/make-icons.mjs"
+  }
+}

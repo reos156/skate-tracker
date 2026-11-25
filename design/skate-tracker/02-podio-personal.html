@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>02 · Podio personal — Skate Tracker</title>
+<style>
+  :root{
+    --pista:#0A3D5C; --deep:#06283B; --amarillo:#FFC72C; --powder:#EAF2F6;
+    --ink:#08161F; --ink2:#5A707D; --line:#D8E4EA; --white:#FFFFFF;
+    --verde:#157A55; --rojo:#B3400F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#DDE7EC;color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .board{max-width:1320px;margin:0 auto;padding:26px 20px 44px}
+  .board-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+  h1{font-size:18px;margin:0 0 4px}
+  .sub{font-size:12px;color:#4E6672;margin:0}
+  .tradeoff{font-size:12px;line-height:1.55;color:#4E6672;max-width:560px;margin:0}
+  .tradeoff b{color:var(--ink)}
+  .frames{display:flex;gap:22px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+  figure{margin:0}
+  .phone{width:390px;height:844px;background:var(--white);border-radius:26px;border:1px solid #C7D6DE;
+    box-shadow:0 20px 44px -24px rgba(8,22,31,.5);overflow:hidden;display:flex;flex-direction:column}
+  figcaption{margin-top:9px;font-size:11px;color:#5F7B87;text-align:center;letter-spacing:.3px}
+  .num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+  .hero{background:linear-gradient(160deg,#0A3D5C 0%,#06283B 100%);color:#F2F8FB;padding:16px 18px 20px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-70px;top:-70px;width:210px;height:210px;border-radius:50%;border:1px solid rgba(255,199,44,.28)}
+  .hero::before{content:"";position:absolute;right:-30px;top:-100px;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,199,44,.16)}
+  .hero .top{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#8FB6C9;position:relative;z-index:1}
+  .hero .pill{background:rgba(255,199,44,.16);color:#FFD873;padding:3px 8px;border-radius:20px;letter-spacing:.08em}
+  .hero h2{font-size:21px;margin:12px 0 0;letter-spacing:-.3px;position:relative;z-index:1}
+  .hero .meta{font-size:11px;color:#9FC0D0;margin:3px 0 0;position:relative;z-index:1}
+  .bigtime{font-size:56px;line-height:1;letter-spacing:-3px;font-weight:600;margin:20px 0 0;position:relative;z-index:1}
+  .bigtime span{font-size:15px;letter-spacing:0;font-weight:500;color:#9FC0D0;display:block;margin-top:8px;font-family:ui-sans-serif,system-ui,sans-serif}
+  .hero .chips{display:flex;gap:7px;margin-top:16px;position:relative;z-index:1;flex-wrap:wrap}
+  .chip{font-size:11px;font-weight:700;padding:5px 10px;border-radius:20px;background:rgba(255,255,255,.1);color:#DDEDF4}
+  .chip.g{background:rgba(76,209,155,.16);color:#7FE3B6}
+  .chip.y{background:rgba(255,199,44,.18);color:#FFD873}
+
+  .sheet{flex:1;padding:16px 18px 0;overflow:hidden;display:flex;flex-direction:column}
+  .h3{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);margin:0 0 9px}
+  .tests{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+  .test{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:13px;padding:10px 12px}
+  .test.hi{border-color:#FFC72C;background:#FFFDF4;box-shadow:0 1px 0 #F3E2AE}
+  .test .nm{flex:1;font-size:12.5px;font-weight:600}
+  .test .nm small{display:block;font-weight:400;color:var(--ink2);font-size:10.5px;margin-top:2px}
+  .test .tm{font-size:13px;font-weight:700}
+  .test .rk{font-size:10px;color:var(--ink2);text-align:right}
+  .test .rk b{display:block;font-size:15px;color:var(--ink)}
+  .arrow{width:18px;text-align:center;font-size:11px;font-weight:700}
+  .arrow.g{color:var(--verde)} .arrow.b{color:var(--rojo)} .arrow.f{color:#9AAFB9}
+
+  .ring{display:flex;align-items:center;gap:14px;border-top:1px solid var(--line);padding-top:14px}
+  .ring p{margin:0;font-size:11.5px;line-height:1.5;color:var(--ink2)}
+  .ring b{color:var(--ink)}
+
+  /* podium frame */
+  .podium{display:flex;align-items:flex-end;gap:8px;margin:4px 0 16px}
+  .pl{flex:1;text-align:center}
+  .pl .bar{border-radius:9px 9px 0 0;background:var(--powder);border:1px solid var(--line);border-bottom:0;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 4px 6px}
+  .pl.one .bar{background:#FFF8E1;border-color:#F0D68C}
+  .pl .who{font-size:9.5px;line-height:1.25;color:var(--ink);min-height:26px}
+  .pl .t{font-size:10.5px;font-weight:700;margin-top:3px}
+  .pl .m{font-size:16px;font-weight:800;color:#B9942B;line-height:1}
+  .mecard{border:2px solid var(--pista);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;background:#F4F9FB}
+  .mecard .rk{font-size:26px;font-weight:800;color:var(--pista);line-height:1;letter-spacing:-1px}
+  .mecard .rk small{display:block;font-size:8.5px;letter-spacing:.14em;color:var(--ink2);font-weight:600;margin-top:3px}
+  .mecard .nm{flex:1;font-size:12.5px;font-weight:700}
+  .mecard .nm small{display:block;font-weight:400;font-size:10.5px;color:var(--ink2);margin-top:2px}
+  .mecard .tm{font-size:15px;font-weight:800}
+  .ghost{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid #EDF4F7;font-size:12px}
+  .ghost .p{width:16px;font-size:10.5px;color:var(--ink2);text-align:right}
+  .ghost .n{flex:1;color:#33505E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ghost .t{font-size:11px;color:#33505E}
+  .ghost .g{width:42px;text-align:right;font-size:10px;color:#8AA2AE}
+
+  /* evolution frame */
+  .evcard{border:1px solid var(--line);border-radius:14px;padding:12px 13px;margin-bottom:10px}
+  .evcard .hh{display:flex;justify-content:space-between;align-items:baseline}
+  .evcard h4{margin:0;font-size:12.5px}
+  .evcard .dd{font-size:11px;font-weight:800}
+  .evcard .dd.g{color:var(--verde)} .evcard .dd.b{color:var(--rojo)}
+  .evcard .cap{font-size:10px;color:var(--ink2);margin:2px 0 0}
+  .lock{background:linear-gradient(160deg,#0A3D5C,#06283B);color:#DCEBF2;border-radius:14px;padding:14px;margin-top:2px}
+  .lock h4{margin:0 0 6px;font-size:12.5px;color:#FFF}
+  .lock p{margin:0;font-size:11px;line-height:1.5;color:#A9C6D4}
+  .lock .steps{display:flex;gap:5px;margin:10px 0 8px}
+  .lock .steps i{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.16)}
+  .lock .steps i.on{background:var(--amarillo)}
+  .lock .steps i.next{background:rgba(255,199,44,.32)}
+  .lock .c{font-size:10px;letter-spacing:.08em;color:#8FB6C9}
+
+  .tabbar{display:flex;border-top:1px solid var(--line);background:#F7FBFD}
+  .tabbar a{flex:1;text-align:center;padding:11px 0 13px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#9AAFB9;text-decoration:none}
+  .tabbar a[aria-current]{color:var(--pista);font-weight:800;box-shadow:inset 0 2px 0 var(--pista)}
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="board-head">
+    <div>
+      <h1>02 · Podio personal</h1>
+      <p class="sub">Dirección emocional · número grande, club en segundo plano</p>
+    </div>
+    <p class="tradeoff"><b>Tradeoff:</b> se lee en cinco segundos y celebra el progreso —el dato principal ocupa media pantalla—. A cambio, <b>el detalle del club se comprime</b>: no sirve para auditar tiempos fila por fila.</p>
+  </div>
+
+  <div class="frames">
+    <!-- ============ A · HOY ============ -->
+    <figure>
+      <div class="phone">
+        <div class="hero">
+          <div class="top"><span>Skate · PAEN</span><span class="pill">Válida 2 · 202611</span></div>
+          <h2>Salomé Rendón Erazo</h2>
+          <p class="meta">Preinfantil 10 Damas · dorsal 14</p>
+          <div class="bigtime num">0'25"828<span>Remates 200 m + distancia</span></div>
+          <div class="chips">
+            <span class="chip g">▼ 0&quot;095 vs válida 1</span>
+            <span class="chip y">8.º de 12 en PAEN</span>
+            <span class="chip">+7,9% al 1.º</span>
+          </div>
+        </div>
+        <div class="sheet">
+          <p class="h3">Sus tres pruebas</p>
+          <div class="tests">
+            <div class="test hi">
+              <span class="arrow g">▲</span>
+              <span class="nm">200 m + distancia<small>0'25"923 → 0'25"828</small></span>
+              <span class="tm num">0'25"828</span>
+              <span class="rk">PAEN<b>8.º</b></span>
+            </div>
+            <div class="test">
+              <span class="arrow g">▲</span>
+              <span class="nm">Habilidad circuito<small>brecha 12,2% → 5,1%</small></span>
+              <span class="tm num">0'18"447</span>
+              <span class="rk">PAEN<b>7.º</b></span>
+            </div>
+            <div class="test">
+              <span class="arrow b">▼</span>
+              <span class="nm">Velocidad olímpica<small>brecha 7,1% → 9,1%</small></span>
+              <span class="tm num">2'14"779</span>
+              <span class="rk">PAEN<b>10.º</b></span>
+            </div>
+          </div>
+          <div class="ring">
+            <svg width="74" height="74" viewBox="0 0 74 74" role="img" aria-label="Brecha al mejor del club: 7,9 por ciento">
+              <circle cx="37" cy="37" r="30" fill="none" stroke="#EAF2F6" stroke-width="9"/>
+              <circle cx="37" cy="37" r="30" fill="none" stroke="#FFC72C" stroke-width="9"
+                stroke-dasharray="14.9 173.6" stroke-dashoffset="47.1" stroke-linecap="round" transform="rotate(-90 37 37)"/>
+              <text x="37" y="42" text-anchor="middle" font-size="15" font-weight="800" fill="#08161F">7,9%</text>
+            </svg>
+            <p><b>Está a 7,9%</b> de la mejor marca del club en los 200 m. Bajar 2 décimas la deja en <b>0'25"6</b>, quinta del PAEN.</p>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <a href="#" aria-current="page">Hoy</a>
+          <a href="#">Club</a>
+          <a href="#">Evolución</a>
+          <a href="#">Cargar</a>
+        </nav>
+      </div>
+      <figcaption>A · Hoy</figcaption>
+    </figure>
+
+    <!-- ============ B · CLUB ============ -->
+    <figure>
+      <div class="phone">
+        <div class="hero" style="padding-bottom:16px">
+          <div class="top"><span>Comparativa interna</span><span class="pill">200 m + dist</span></div>
+          <h2 style="font-size:19px;margin-top:10px">PAEN, válida 2</h2>
+          <p class="meta">12 patinadoras con tiempo válido · 1 DNF</p>
+        </div>
+        <div class="sheet">
+          <div class="podium">
+            <div class="pl">
+              <div class="bar" style="height:78px">
+                <span class="m">2</span>
+                <span class="who">Luciana Perafán</span>
+                <span class="t num">0'24"660</span>
+              </div>
+            </div>
+            <div class="pl one">
+              <div class="bar" style="height:100px">
+                <span class="m">1</span>
+                <span class="who">Salomé Muñoz</span>
+                <span class="t num">0'23"946</span>
+              </div>
+            </div>
+            <div class="pl">
+              <div class="bar" style="height:72px">
+                <span class="m">3</span>
+                <span class="who">Mariangel González</span>
+                <span class="t num">0'24"661</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="h3">Y el resto del club</p>
+          <div class="ghost"><span class="p">4</span><span class="n">Luciana Villa Castillo</span><span class="t num">0'24"813</span><span class="g">+3,6%</span></div>
+          <div class="ghost"><span class="p">5</span><span class="n">Gabriela Gutiérrez Ruie</span><span class="t num">0'25"214</span><span class="g">+5,3%</span></div>
+          <div class="ghost"><span class="p">6</span><span class="n">María José Amaya Restrepo</span><span class="t num">0'25"423</span><span class="g">+6,2%</span></div>
+          <div class="ghost"><span class="p">7</span><span class="n">Samai Valeria Berthi J.</span><span class="t num">0'25"640</span><span class="g">+7,1%</span></div>
+
+          <div class="mecard" style="margin:12px 0">
+            <span class="rk">8<small>PUESTO</small></span>
+            <span class="nm">Salomé Rendón Erazo<small>subió 4 puestos desde la válida 1</small></span>
+            <span class="tm num">0'25"828</span>
+          </div>
+
+          <div class="ghost"><span class="p">9</span><span class="n">Susana Agudelo Hernández</span><span class="t num">0'25"913</span><span class="g">+8,2%</span></div>
+          <div class="ghost"><span class="p">10</span><span class="n">Sara Ocampo Becerra</span><span class="t num">0'25"948</span><span class="g">+8,4%</span></div>
+          <div class="ghost"><span class="p">11</span><span class="n">Inés Jaramillo Sanín</span><span class="t num">0'26"089</span><span class="g">+8,9%</span></div>
+          <div class="ghost" style="border-bottom:0"><span class="p">12</span><span class="n">María Antonia Ramírez</span><span class="t num">0'26"239</span><span class="g">+9,6%</span></div>
+          <p style="font-size:10px;color:#8AA2AE;margin:6px 0 0;line-height:1.4">Mariangel Ospina Trejos · DNF — sin tiempo válido, no se rankea.</p>
+        </div>
+        <nav class="tabbar">
+          <a href="#">Hoy</a>
+          <a href="#" aria-current="page">Club</a>
+          <a href="#">Evolución</a>
+          <a href="#">Cargar</a>
+        </nav>
+      </div>
+      <figcaption>B · Club PAEN</figcaption>
+    </figure>
+
+    <!-- ============ C · EVOLUCIÓN ============ -->
+    <figure>
+      <div class="phone">
+        <div class="hero" style="padding-bottom:14px">
+          <div class="top"><span>Evolución</span><span class="pill">2 válidas</span></div>
+          <h2 style="font-size:19px;margin-top:10px">Está subiendo</h2>
+          <p class="meta">brecha al mejor del club, por prueba</p>
+        </div>
+        <div class="sheet">
+          <div class="evcard">
+            <div class="hh"><h4>Habilidad circuito</h4><span class="dd g">−7,1 pp</span></div>
+            <p class="cap">12,2% → 5,1% de brecha</p>
+            <svg width="322" height="64" viewBox="0 0 322 64" role="img" aria-label="Habilidad: brecha 12,2 a 5,1 por ciento">
+              <path d="M10 14 L110 30 L210 46 L312 46" fill="none" stroke="#EAF2F6" stroke-width="8" stroke-linecap="round"/>
+              <path d="M10 14 L110 30" fill="none" stroke="#157A55" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="10" cy="14" r="4" fill="#157A55"/>
+              <circle cx="110" cy="30" r="5.5" fill="#157A55" stroke="#FFF" stroke-width="2.5"/>
+              <circle cx="210" cy="46" r="5.5" fill="#FFF" stroke="#C7D6DE" stroke-width="2" stroke-dasharray="3 3"/>
+              <circle cx="312" cy="46" r="5.5" fill="#FFF" stroke="#C7D6DE" stroke-width="2" stroke-dasharray="3 3"/>
+              <text x="312" y="62" text-anchor="end" font-size="9" fill="#8AA2AE">válida 3 · 4</text>
+            </svg>
+          </div>
+
+          <div class="evcard">
+            <div class="hh"><h4>Remates 200 m + dist</h4><span class="dd g">−0,3 pp</span></div>
+            <p class="cap">8,2% → 7,9% de brecha</p>
+            <svg width="322" height="52" viewBox="0 0 322 52" role="img" aria-label="200 metros: brecha 8,2 a 7,9 por ciento">
+              <path d="M10 18 L110 34 L210 12 L312 12" fill="none" stroke="#EAF2F6" stroke-width="8" stroke-linecap="round"/>
+              <path d="M10 18 L110 34" fill="none" stroke="#157A55" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="10" cy="18" r="4" fill="#157A55"/>
+              <circle cx="110" cy="34" r="5.5" fill="#157A55" stroke="#FFF" stroke-width="2.5"/>
+              <circle cx="210" cy="12" r="5.5" fill="#FFF" stroke="#C7D6DE" stroke-width="2" stroke-dasharray="3 3"/>
+              <circle cx="312" cy="12" r="5.5" fill="#FFF" stroke="#C7D6DE" stroke-width="2" stroke-dasharray="3 3"/>
+            </svg>
+          </div>
+
+          <div class="evcard">
+            <div class="hh"><h4>Velocidad olímpica</h4><span class="dd b">+1,9 pp</span></div>
+            <p class="cap">7,1% → 9,1% de brecha · pasó a 600 m</p>
+            <svg width="322" height="52" viewBox="0 0 322 52" role="img" aria-label="Olímpica: brecha 7,1 a 9,1 por ciento">
+              <path d="M10 30 L110 14 L210 14 L312 14" fill="none" stroke="#EAF2F6" stroke-width="8" stroke-linecap="round"/>
+              <path d="M10 30 L110 14" fill="none" stroke="#B3400F" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="10" cy="30" r="4" fill="#B3400F"/>
+              <circle cx="110" cy="14" r="5.5" fill="#B3400F" stroke="#FFF" stroke-width="2.5"/>
+              <circle cx="210" cy="14" r="5.5" fill="#FFF" stroke="#C7D6DE" stroke-width="2" stroke-dasharray="3 3"/>
+              <circle cx="312" cy="14" r="5.5" fill="#FFF" stroke="#C7D6DE" stroke-width="2" stroke-dasharray="3 3"/>
+            </svg>
+          </div>
+
+          <div class="lock">
+            <h4>Proyección bloqueada</h4>
+            <div class="steps"><i class="on"></i><i class="on"></i><i class="next"></i></div>
+            <div class="c">2 de 3 válidas</div>
+            <p style="margin-top:8px">Con dos puntos cualquier proyección es una recta dibujada a mano. La app estima la válida 3 cuando exista.</p>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <a href="#">Hoy</a>
+          <a href="#">Club</a>
+          <a href="#" aria-current="page">Evolución</a>
+          <a href="#">Cargar</a>
+        </nav>
+      </div>
+      <figcaption>C · Evolución</figcaption>
+    </figure>
+  </div>
+</div>
+</body>
+</html>

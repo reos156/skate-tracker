@@ -1,0 +1,15 @@
+# dependencias
+node_modules/
+
+# credenciales: nunca al repositorio
+.env
+.env.*
+*.key
+*.pem
+
+# basura del sistema
+.DS_Store
+
+# Planillas escaneadas: contienen datos de menores, no van al repo
+# (se conservan solo en local)
+tiempos/

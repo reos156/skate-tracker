@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "chosen": "04-lugar-en-la-pista.html",
+  "handoffs": {
+    "04-lugar-en-la-pista.html": {
+      "status": "implemented",
+      "queued": false,
+      "sentAt": "2026-11-25T21:56:32.642Z",
+      "startedAt": "2026-11-25T21:56:50.645Z",
+      "implementedAt": "2026-11-25T21:59:33.489Z",
+      "feature": "odd/tasks/skate-tracker.md",
+      "note": "Evolución sin porcentajes: puestos, dos franjas sobre escala compartida, hueco al rival y al podio, y aviso de ruido. 64 pruebas en verde.",
+      "previewUrl": "http://localhost:4173/"
+    }
+  }
+}

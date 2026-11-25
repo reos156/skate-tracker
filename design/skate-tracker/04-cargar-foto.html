@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>04 · Cargar por foto — Skate Tracker</title>
+<style>
+  :root{
+    --bg:#FCFBF8; --ink:#191510; --ink2:#6A6157; --ink3:#958B7E;
+    --line:#E5DED3; --line2:#F2EDE4;
+    --ok:#0F6B63; --ok-soft:#E6F2F0; --warn:#8A5A00; --warn-soft:#FCF3DD;
+    --bad:#A5370A; --bad-soft:#FBEBE3; --accent:#191510;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#EDE9E1;color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .board{max-width:1760px;margin:0 auto;padding:26px 18px 44px}
+  .board-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+  h1{font-size:18px;margin:0 0 4px}
+  .sub{font-size:12px;color:#6A6157;margin:0}
+  .tradeoff{font-size:12px;line-height:1.55;color:#6A6157;max-width:680px;margin:0}
+  .tradeoff b{color:var(--ink)}
+  .frames{display:flex;gap:18px;justify-content:center;align-items:flex-start;flex-wrap:wrap}
+  figure{margin:0}
+  .phone{width:390px;height:844px;background:var(--bg);border-radius:26px;border:1px solid #D8D0C2;
+    box-shadow:0 20px 44px -24px rgba(25,21,16,.45);overflow:hidden;display:flex;flex-direction:column}
+  figcaption{margin-top:9px;font-size:11px;color:#7A7064;text-align:center;letter-spacing:.3px}
+  .num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:15px 18px 13px;border-bottom:1px solid var(--line)}
+  .top .b{font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:700}
+  .top .s{font-size:10.5px;color:var(--ink3)}
+  .body{flex:1;padding:18px;overflow:hidden}
+  h2{font-size:19px;margin:0 0 6px;letter-spacing:-.2px}
+  p.lead{font-size:12px;color:var(--ink2);line-height:1.55;margin:0 0 18px}
+  .eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:6px}
+
+  .drop{border:1.5px dashed #CFC5B5;border-radius:16px;background:#FFFDF9;padding:26px 18px;text-align:center}
+  .drop .ic{width:54px;height:54px;border-radius:14px;background:#F1EBE0;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+  .drop h3{font-size:14px;margin:0 0 6px}
+  .drop p{font-size:11.5px;color:var(--ink2);line-height:1.5;margin:0 0 16px}
+  .btn{display:block;width:100%;padding:13px;border-radius:11px;background:var(--accent);color:#FCF7EC;
+    font-size:13px;font-weight:700;text-align:center;border:0;letter-spacing:.01em}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:600;margin-top:8px}
+  .btn.ok{background:var(--ok)}
+  .hint{font-size:10px;color:var(--ink3);text-align:center;margin:12px 0 0;line-height:1.5}
+  .filters{display:flex;gap:6px;margin:16px 0 0;flex-wrap:wrap}
+  .filters span{font-size:10px;padding:4px 9px;border-radius:20px;background:#F1EBE0;color:var(--ink2)}
+
+  .scan{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%}
+  .sh{width:150px;height:190px;border-radius:10px;background:#FFF;border:1px solid var(--line);
+    position:relative;overflow:hidden;box-shadow:0 10px 24px -14px rgba(25,21,16,.5)}
+  .sh i{position:absolute;left:12px;right:12px;height:7px;border-radius:3px;background:#F0EAE0;display:block}
+  .sh i:nth-child(1){top:26px}.sh i:nth-child(2){top:44px;right:40px}
+  .sh i:nth-child(3){top:62px}.sh i:nth-child(4){top:80px;right:54px}
+  .sh i:nth-child(5){top:98px}.sh i:nth-child(6){top:116px;right:36px}
+  .sh i:nth-child(7){top:134px}.sh i:nth-child(8){top:152px;right:62px}
+  .sh .bar{position:absolute;left:0;right:0;top:96px;height:2px;background:var(--ok);box-shadow:0 0 12px 2px rgba(15,107,99,.4)}
+  .scan h3{font-size:14px;margin:20px 0 4px}
+  .scan p{font-size:11.5px;color:var(--ink2);margin:0;text-align:center;line-height:1.5;max-width:250px}
+  .prog{width:200px;height:4px;border-radius:2px;background:#EDE7DC;margin:16px 0 0;overflow:hidden}
+  .prog i{display:block;height:100%;width:58%;background:var(--ok)}
+
+  .rowr{display:grid;grid-template-columns:1fr 74px 54px;gap:8px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line2);font-size:12px}
+  .rowr .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rowr .n b{font-weight:600}
+  .rowr .n small{display:block;font-size:9.5px;color:var(--ink3);margin-top:1px}
+  .rowr .t{text-align:right;font-size:11.5px;padding:4px 6px;border-radius:6px;background:#FFF;border:1px solid var(--line)}
+  .rowr .c{font-size:9px;font-weight:800;letter-spacing:.04em;text-align:right}
+  .c.hi{color:var(--ok)} .c.md{color:var(--warn)} .c.lo{color:var(--bad)}
+  .rowr.me{background:#FBF6EC;margin:0 -18px;padding:9px 18px;border-bottom:1px solid #EFE5D2}
+  .rowr.me .n b{color:var(--accent)}
+  .sum{display:flex;gap:8px;margin:14px 0}
+  .sum div{flex:1;border-radius:9px;padding:8px 10px;font-size:10.5px;line-height:1.35}
+  .sum .a{background:var(--ok-soft);color:#0B534D}
+  .sum .b{background:var(--warn-soft);color:#6E4700}
+  .sum b{display:block;font-size:15px;letter-spacing:-.3px;margin-bottom:1px}
+  .warnbox{background:var(--warn-soft);border:1px solid #EFDCAE;border-radius:10px;padding:10px 11px;font-size:10.5px;line-height:1.5;color:#6E4700;margin-bottom:14px}
+  .warnbox b{color:#4E3300}
+  .sticky{padding:0}
+
+  .done{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center}
+  .done .ck{width:66px;height:66px;border-radius:50%;background:var(--ok-soft);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .done h3{font-size:16px;margin:0 0 6px}
+  .done p{font-size:11.5px;color:var(--ink2);line-height:1.55;margin:0;max-width:250px}
+  .card{margin-top:18px;border:1px solid var(--line);border-radius:11px;background:#FFFDF9;padding:12px 14px;width:100%;text-align:left}
+  .card .l{display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0}
+  .card .l span:last-child{font-weight:700}
+  .tabbar{display:flex;border-top:1px solid var(--line);background:#F7F3EC}
+  .tabbar a{flex:1;text-align:center;padding:11px 0 13px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#958B7E;text-decoration:none}
+  .tabbar a[aria-current]{color:var(--ink);font-weight:800;box-shadow:inset 0 2px 0 var(--ink)}
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="board-head">
+    <div>
+      <h1>04 · Cargar por foto</h1>
+      <p class="sub">El flujo que sostiene la app · lectura local + confirmación humana obligatoria</p>
+    </div>
+    <p class="tradeoff"><b>Tradeoff:</b> subir la planilla ahorra teclear 12–60 filas, pero la lectura de una tabla fotografiada <b>nunca es confiable al 100%</b>. Por eso el paso 3 existe: la app propone, el adulto confirma. Sin confirmación no se guarda nada.</p>
+  </div>
+
+  <div class="frames">
+    <!-- 1 · SUBIR -->
+    <figure>
+      <div class="phone">
+        <div class="top"><span class="b">Cargar</span><span class="s">paso 1 de 3</span></div>
+        <div class="body">
+          <span class="eyebrow">Nueva válida</span>
+          <h2>Subí la foto de la planilla</h2>
+          <p class="lead">La app lee los tiempos en el teléfono, sin subir la imagen a ningún servidor.</p>
+
+          <div class="drop">
+            <div class="ic">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#958B7E" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.9l1.2-1.7A1.5 1.5 0 0 1 9.8 3.6h4.4a1.5 1.5 0 0 1 1.2.7L16.6 6h1.9A2.5 2.5 0 0 1 21 8.5v8A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5z"/>
+                <circle cx="12" cy="12.5" r="3.4"/>
+              </svg>
+            </div>
+            <h3>Foto o captura de pantalla</h3>
+            <p>Sirve la captura del Excel que manda el club. Que se vean las columnas de nombre y tiempo.</p>
+            <button class="btn">Tomar foto</button>
+            <button class="btn ghost">Elegir de la galería</button>
+          </div>
+          <div class="filters">
+            <span>202608 · Copa Antioquia</span>
+            <span>200 m + distancia</span>
+            <span>Habilidad #19</span>
+          </div>
+          <p class="hint">Si la foto sale mal, nada se pierde: podés cargar los tiempos a mano en cualquier momento.</p>
+        </div>
+        <nav class="tabbar">
+          <a href="#">Hoy</a><a href="#">Club</a><a href="#">Evolución</a><a href="#" aria-current="page">Cargar</a>
+        </nav>
+      </div>
+      <figcaption>1 · Subir</figcaption>
+    </figure>
+
+    <!-- 2 · LEYENDO -->
+    <figure>
+      <div class="phone">
+        <div class="top"><span class="b">Cargar</span><span class="s">paso 2 de 3</span></div>
+        <div class="body">
+          <div class="scan">
+            <div class="sh">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              <span class="bar"></span>
+            </div>
+            <h3>Leyendo la planilla…</h3>
+            <p>Detectando 57 filas y las columnas de nombre y tiempo.</p>
+            <div class="prog"><i></i></div>
+            <p style="margin-top:10px;font-size:10.5px;color:#958B7E">Esto puede tardar unos segundos en un teléfono viejo.</p>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <a href="#">Hoy</a><a href="#">Club</a><a href="#">Evolución</a><a href="#" aria-current="page">Cargar</a>
+        </nav>
+      </div>
+      <figcaption>2 · Leyendo</figcaption>
+    </figure>
+
+    <!-- 3 · REVISAR -->
+    <figure>
+      <div class="phone">
+        <div class="top"><span class="b">Cargar</span><span class="s">paso 3 de 3</span></div>
+        <div class="body" style="padding-bottom:0">
+          <span class="eyebrow">Revisá antes de guardar</span>
+          <h2 style="font-size:17px">Esto es lo que leí</h2>
+
+          <div class="sum">
+            <div class="a"><b>51</b>lecturas seguras</div>
+            <div class="b"><b>6</b>a revisar</div>
+          </div>
+
+          <div class="warnbox"><b>Revisá las filas amarillas.</b> El nombre o el tiempo salieron borrosos en la foto. Tocalos para corregirlos; después guardá.</div>
+
+          <div class="rowr"><span class="n"><b>Salomé Muñoz Hernández</b><small>fila 5</small></span><span class="t num">0'23"946</span><span class="c hi">SEGURA</span></div>
+          <div class="rowr"><span class="n"><b>Luciana Perafán Cárdenas</b><small>fila 21</small></span><span class="t num">0'24"660</span><span class="c hi">SEGURA</span></div>
+          <div class="rowr"><span class="n"><b>Mariangel González Casas</b><small>fila 22 · ¿0'24"601?</small></span><span class="t num">0'24"661</span><span class="c md">REVISAR</span></div>
+          <div class="rowr"><span class="n"><b>Luciana Villa Castillo</b><small>fila 27</small></span><span class="t num">0'24"813</span><span class="c hi">SEGURA</span></div>
+          <div class="rowr me"><span class="n"><b>Salomé Rendón Erazo</b><small>fila 42 · coincide con tu patinadora</small></span><span class="t num">0'25"828</span><span class="c hi">SEGURA</span></div>
+          <div class="rowr"><span class="n"><b>Mariangel Ospina Trejos</b><small>fila 56 · la celda dice DNF</small></span><span class="t num">DNF</span><span class="c md">ESTADO</span></div>
+          <div class="rowr"><span class="n"><b>María Antonia Ramírez</b><small>fila 57 · nombre cortado</small></span><span class="t num">0'26"239</span><span class="c md">REVISAR</span></div>
+
+          <div style="padding:14px 0 16px;background:var(--bg)">
+            <button class="btn ok">Guardar 57 filas · válida 202611</button>
+            <button class="btn ghost">Cancelar</button>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <a href="#">Hoy</a><a href="#">Club</a><a href="#">Evolución</a><a href="#" aria-current="page">Cargar</a>
+        </nav>
+      </div>
+      <figcaption>3 · Revisar</figcaption>
+    </figure>
+
+    <!-- 4 · GUARDADO -->
+    <figure>
+      <div class="phone">
+        <div class="top"><span class="b">Cargar</span><span class="s">listo</span></div>
+        <div class="body">
+          <div class="done">
+            <div class="ck">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0F6B63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12.5 9.5 18 20 6.5"/>
+              </svg>
+            </div>
+            <h3>Guardado y comparado</h3>
+            <p>57 filas de la válida 202611 entraron al registro. Salomé subió cuatro puestos en los 200 m.</p>
+            <div class="card">
+              <div class="l"><span>Prueba</span><span>200 m + distancia</span></div>
+              <div class="l"><span>Su tiempo</span><span class="num">0'25"828</span></div>
+              <div class="l"><span>Puesto en PAEN</span><span>8.º de 12</span></div>
+              <div class="l"><span>Brecha al 1.º</span><span>+7,9%</span></div>
+              <div class="l"><span>vs válida anterior</span><span style="color:#0F6B63">−0"095</span></div>
+            </div>
+            <button class="btn" style="margin-top:18px">Ver el club</button>
+            <button class="btn ghost">Cargar otra prueba</button>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <a href="#">Hoy</a><a href="#">Club</a><a href="#">Evolución</a><a href="#" aria-current="page">Cargar</a>
+        </nav>
+      </div>
+      <figcaption>4 · Confirmado</figcaption>
+    </figure>
+  </div>
+</div>
+</body>
+</html>

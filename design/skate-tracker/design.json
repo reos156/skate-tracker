@@ -1,0 +1,35 @@
+{
+  "title": "Skate Tracker · Salomé Rendón Erazo (PAEN)",
+  "brief": "App PWA para seguir los tiempos de Salomé Rendón Erazo en las 3 pruebas de su categoría (Preinfantil 10 Damas), compararla con sus compañeras del club PAEN y ver su evolución y proyección. Datos reales de las planillas de la Copa Antioquia 202608 y 202611.",
+  "feature": "odd/tasks/skate-tracker.md",
+  "artboards": [
+    {
+      "file": "01-bitacora.html",
+      "title": "01 · Bitácora — densa y tabular",
+      "tradeoff": "Máxima comparabilidad y precisión tipográfica (tiempos monoespaciados, brecha en %). Mejor para analizar, peor para leer de reojo en la pista.",
+      "width": 1300,
+      "height": 940
+    },
+    {
+      "file": "02-podio-personal.html",
+      "title": "02 · Podio personal — emocional",
+      "tradeoff": "Se lee en cinco segundos y celebra el progreso; el detalle del club queda comprimido y no sirve para auditar fila por fila.",
+      "width": 1300,
+      "height": 940
+    },
+    {
+      "file": "03-carriles.html",
+      "title": "03 · Carriles — visual",
+      "tradeoff": "El hueco con el grupo se ve sin explicación; los tiempos exactos pasan a segundo plano y las etiquetas piden espacio.",
+      "width": 1300,
+      "height": 940
+    },
+    {
+      "file": "04-cargar-foto.html",
+      "title": "04 · Cargar por foto — flujo de 4 pasos",
+      "tradeoff": "Ahorra teclear 12–60 filas, pero la lectura de una tabla fotografiada nunca es 100% confiable: la confirmación humana es obligatoria y sin ella no se guarda nada.",
+      "width": 1760,
+      "height": 940
+    }
+  ]
+}

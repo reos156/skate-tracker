@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "chosen": "02-podio-personal.html",
+  "handoffs": {
+    "02-podio-personal.html": {
+      "status": "implemented",
+      "queued": true,
+      "sentAt": "2026-11-23T22:16:02.581Z",
+      "startedAt": "2026-11-23T22:37:21.400Z",
+      "implementedAt": "2026-11-23T22:40:42.317Z",
+      "feature": "odd/tasks/skate-tracker.md",
+      "note": "Podio del club, anillo de brecha en Hoy con frase accionable, y proyección oscura con válidas futuras vacías. 42 pruebas en verde.",
+      "previewUrl": "http://127.0.0.1:4173/"
+    }
+  }
+}

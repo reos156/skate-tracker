@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skate Tracker · Salomé Rendón Erazo</title>
+<meta name="description" content="Seguimiento de tiempos de Salomé Rendón Erazo en las tres pruebas de su categoría y comparación con el club PAEN.">
+<meta name="theme-color" content="#06283B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Skate">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./app.css">
+</head>
+<body>
+<a class="skip" href="#view">Saltar al contenido</a>
+
+<div class="app">
+  <main id="view" tabindex="-1" aria-live="polite"></main>
+
+  <nav class="tabbar" aria-label="Secciones">
+    <a href="#hoy" data-tab="hoy">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 13.5 12 6l8 7.5"/><path d="M6.5 12v7h11v-7"/></svg>
+      <span>Hoy</span>
+    </a>
+    <a href="#club" data-tab="club">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="2.6"/><circle cx="16" cy="8" r="2.6"/><path d="M3.4 19c.6-3 2.5-4.6 4.6-4.6s4 1.6 4.6 4.6"/><path d="M11.6 19c.6-3 2.5-4.6 4.6-4.6s4 1.6 4.6 4.6"/></svg>
+      <span>Club</span>
+    </a>
+    <a href="#evolucion" data-tab="evolucion">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 17.5 9.5 11l3.6 3.2L20 6.5"/><path d="M15.6 6.5H20v4.4"/></svg>
+      <span>Evolución</span>
+    </a>
+    <a href="#cargar" data-tab="cargar">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.9l1.2-1.7A1.5 1.5 0 0 1 9.8 3.6h4.4a1.5 1.5 0 0 1 1.2.7L16.6 6h1.9A2.5 2.5 0 0 1 21 8.5v8A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg>
+      <span>Cargar</span>
+    </a>
+  </nav>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="./src/app.js"></script>
+</body>
+</html>

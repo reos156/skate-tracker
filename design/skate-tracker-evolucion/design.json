@@ -1,0 +1,28 @@
+{
+  "title": "Evolución · rediseño",
+  "brief": "Rediseño de la pestaña Evolución, segunda vuelta. La primera usaba 'brecha porcentual al mejor del club' y fue rechazada: es abstracta y no le sirve a una nena de 10 años. La restricción que manda: las pruebas son de velocidad y las diferencias son de centésimas (0,095 s = 0,4%), así que toda visualización tiene que ser honesta con esa magnitud. Estas tres direcciones no usan porcentajes: hablan de puestos, de milésimas y de la próxima marca a cazar.",
+  "feature": "odd/tasks/skate-tracker.md",
+  "artboards": [
+    {
+      "file": "04-lugar-en-la-pista.html",
+      "title": "D · Tu lugar en la pista",
+      "tradeoff": "«Subí 4 puestos» se entiende sin explicación y la diferencia chica se vuelve visible como movimiento entre personas. Depende de tener club con quién comparar y una válida con pocas rivales puede inflar el puesto.",
+      "width": 470,
+      "height": 980
+    },
+    {
+      "file": "05-milesimas.html",
+      "title": "E · Milésimas",
+      "tradeoff": "Es la única honesta con la magnitud real: 0,095 s es 0,4%, y cualquier gráfico de tiempos que lo haga parecer enorme miente. Más difícil para una nena: «95 milésimas» y una banda de error piden explicación.",
+      "width": 470,
+      "height": 980
+    },
+    {
+      "file": "06-mi-mejor-marca.html",
+      "title": "F · Mi mejor marca",
+      "tradeoff": "Motivador y clarísimo —«mi mejor marca» y «objetivo» son ideas que la nena ya tiene— y no depende de cómo corrieron las demás. No dice nada del club: sirve para progresar, no para saber cómo está parada.",
+      "width": 470,
+      "height": 980
+    }
+  ]
+}
