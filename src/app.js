@@ -402,9 +402,15 @@ function renderClub() {
  * Compartir el dominio entre las dos válidas es lo que hace que la diferencia
  * de centésimas se vea como lo que es: chica.
  */
-function miniStrip(rows, domain) {
+function miniStrip(rows, sharedDomain) {
   const W = 320;
   const y = 11;
+  // Si la base de la prueba cambió, cada válida se dibuja en su propia escala:
+  // compartir el eje entre 300 m y 600 m haría parecer que se volvió lentísima.
+  const domain = sharedDomain ?? {
+    min: Math.min(...rows.map((row) => row.ms)),
+    max: Math.max(...rows.map((row) => row.ms)),
+  };
   const span = domain.max - domain.min || 1;
   const x = (ms) => 6 + ((ms - domain.min) / span) * (W - 12);
   const dots = rows
@@ -481,9 +487,13 @@ function renderEvolucion() {
   const visibleTests = tests
     .map((item) => {
       const shown = item.series.filter((point) => point.timed.length > 0).slice(-2);
+      const sameBasis =
+        shown.length === 2 &&
+        (shown[0].mine?.distanceM ?? null) === (shown[1].mine?.distanceM ?? null) &&
+        (shown[0].mine?.circuit ?? null) === (shown[1].mine?.circuit ?? null);
       const all = shown.flatMap((point) => point.timed.map((row) => row.ms));
-      const domain = all.length ? { min: Math.min(...all), max: Math.max(...all) } : null;
-      return { ...item, shown, domain };
+      const domain = sameBasis && all.length ? { min: Math.min(...all), max: Math.max(...all) } : null;
+      return { ...item, shown, domain, sameBasis };
     })
     .filter((item) => item.now || item.series.some((point) => point.mine));
 
@@ -605,7 +615,7 @@ function renderEvolucion() {
       ${cards}
       <h2 class="sect">Proyección <span>solo con datos suficientes</span></h2>
       ${projection}
-      <p class="note">Cada punto gris es una compañera del club con tiempo válido; el naranja es Salomé. Las dos franjas comparten la misma escala de tiempo.</p>
+      <p class="note">Cada punto gris es una compañera del club con tiempo válido; el naranja es Salomé. Cuando la prueba es la misma, las dos franjas comparten la escala; cuando cambió la base, cada válida se dibuja en la suya.</p>
     </div>`;
 }
 
